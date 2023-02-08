@@ -51,7 +51,7 @@ for (const url of urls) {
       // Get the date from the response headers
       const date = res.headers.get("date");
       console.log(
-        `site: ${host}\nlinks: ${links.length}\nimages: ${images.length}\nlast_fetch: ${date}`
+        `\nsite: ${host}\nlinks: ${links.length}\nimages: ${images.length}\nlast_fetch: ${date}`
       );
     }
   } catch (error) {
