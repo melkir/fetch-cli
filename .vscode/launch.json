@@ -9,6 +9,7 @@
       "name": "Launch Program",
       "type": "node",
       "program": "${workspaceFolder}/main.ts",
+      "args": ["https://www.google.com", "https://autify.com"],
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "deno",
       "runtimeArgs": ["run", "--inspect-brk", "--allow-all"],
