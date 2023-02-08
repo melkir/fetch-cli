@@ -1,4 +1,5 @@
 import { parse } from "https://deno.land/std@0.177.0/flags/mod.ts";
+import { isURL } from "./utils.ts";
 
 const {
   _: urls,
@@ -24,20 +25,6 @@ ${USAGE_TEXT}
 
 Try \`fetch --help' for more options.`);
   Deno.exit(1);
-}
-
-/**
- * Check if a string is a valid url
- * @param str the string to check
- * @returns boolean
- */
-function isURL(str: string): boolean {
-  try {
-    new URL(str);
-  } catch (_) {
-    return false;
-  }
-  return true;
 }
 
 for (const url of urls) {
