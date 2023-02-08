@@ -1,9 +1,10 @@
 import { parse } from "https://deno.land/std@0.177.0/flags/mod.ts";
+import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts";
 import { isURL } from "./utils.ts";
 
 const {
   _: urls,
-  _metadata,
+  metadata,
   help,
 } = parse(Deno.args, {
   boolean: ["metadata", "help"],
@@ -11,6 +12,7 @@ const {
 });
 
 const USAGE_TEXT = `Usage: fetch [options...] <urls...>`;
+const parser = new DOMParser();
 
 if (help) {
   console.info(`${USAGE_TEXT}
@@ -36,9 +38,22 @@ for (const url of urls) {
   try {
     const res = await fetch(url);
     const html = await res.text();
-    const filename = `${new URL(url).host}.html`;
+    const { host } = new URL(url);
+
     // Write the html page to the disk and overwrite if it already exists
-    await Deno.writeTextFile(filename, html);
+    await Deno.writeTextFile(`${host}.html`, html);
+
+    if (metadata) {
+      // Parse the html page and get the links and images
+      const doc = parser.parseFromString(html, "text/html")!;
+      const links = doc.getElementsByTagName("a");
+      const images = doc.getElementsByTagName("img");
+      // Get the date from the response headers
+      const date = res.headers.get("date");
+      console.log(
+        `site: ${host}\nlinks: ${links.length}\nimages: ${images.length}\nlast_fetch: ${date}`
+      );
+    }
   } catch (error) {
     console.error(`Error while fetching ${url}:`, error);
   }
