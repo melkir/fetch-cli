@@ -1,5 +1,4 @@
-import { parse } from "https://deno.land/std@0.177.0/flags/mod.ts";
-import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts";
+import { parse, DOMParser } from "./deps.ts";
 import { isURL } from "./utils.ts";
 
 const {
